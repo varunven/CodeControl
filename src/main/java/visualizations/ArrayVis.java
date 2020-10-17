@@ -1,7 +1,10 @@
 package visualizations;
 
 import StdDraw.StdDraw;
+import colors.Colors;
 import unitVisualizations.ArrayCellBlock;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayVis<T> {
@@ -10,9 +13,15 @@ public class ArrayVis<T> {
     private List<ArrayCellBlock> blockList;
     private int size;
     private int capacity;
+    private Colors colors;
 
     public ArrayVis(T[] array){
         this.array = array;
+        this.blockList = new ArrayList<>();
+        for(int i = 0;i<array.length;i++){
+            blockList.add(new ArrayCellBlock<>());
+        }
+        this.colors = new Colors();
     }
 
     private Resize needsResize(int capacity, int size){
@@ -39,8 +48,8 @@ public class ArrayVis<T> {
     public void add(T data, int index){
         array[index] = data;
         ArrayCellBlock toAdd = new ArrayCellBlock();
-        toAdd.addToBlock(data);
         blockList.add(index, toAdd);
+        blockList.get(index).setColor(colors.getColor("ADD"));
         //draw the block
         size++;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
@@ -51,9 +60,8 @@ public class ArrayVis<T> {
     public T remove(int index){
         T oldData = array[index];
         array[index] = null;
-        ArrayCellBlock toRemove = blockList.get(index);
-        toRemove.removeFromBlock();
-        blockList.remove(index);
+        blockList.get(index).setColor(colors.getColor("REMOVE"));
+        blockList.set(index, null);
         size--;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
             resize();

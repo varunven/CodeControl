@@ -19,21 +19,9 @@ public class ArrayCellBlock <T> {
         this.cellColor = colors.getColor("EMPTY");
     }
 
-    public String changeColor(String colorName){
+    public String setColor(String colorName){
         this.cellColor = colors.getColor(colorName);
         return cellColor;
-    }
-
-    public void addToBlock(T data){
-        this.cellColor = colors.getColor("ADD");
-        this.data = data;
-    }
-
-    public T removeFromBlock(){
-        this.cellColor = colors.getColor("REMOVE");
-        T temp = this.data;
-        this.data = null;
-        return temp;
     }
 
     public String getCellColor(){
