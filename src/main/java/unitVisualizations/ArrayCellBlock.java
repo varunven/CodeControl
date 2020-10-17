@@ -2,6 +2,8 @@ package unitVisualizations;
 
 import colors.Colors;
 
+import java.awt.*;
+
 public class ArrayCellBlock <T> {
 
     //fixed width, height proportions- adjust with array size
@@ -10,7 +12,7 @@ public class ArrayCellBlock <T> {
     //data text- adjust with cell width and height
     public static final int TEXT_SIZE = 1;
 
-    private String cellColor;
+    private Color cellColor;
     private T data;
     private Colors colors;
 
@@ -19,12 +21,12 @@ public class ArrayCellBlock <T> {
         this.cellColor = colors.getColor("EMPTY");
     }
 
-    public String setColor(String colorName){
+    public void setColor(String colorName){
         this.cellColor = colors.getColor(colorName);
-        return cellColor;
+
     }
 
-    public String getCellColor(){
+    public Color getCellColor(){
         return this.cellColor;
     }
 

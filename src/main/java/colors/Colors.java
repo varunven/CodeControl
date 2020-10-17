@@ -1,21 +1,22 @@
 package colors;
-
+import StdDraw.StdDraw;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Colors {
-    private Map<String, String> colors;
+    private Map<String, Color> colors;
 
     public Colors(){
         colors = new HashMap<>();
-        colors.put("ADD", "#008000");
-        colors.put("REMOVE", "#FF0000");
-        colors.put("ITERATE", "#87CEEB");
-        colors.put("FILLED", "#FFFFFF");
-        colors.put("EMPTY", "#808080");
+        colors.put("ADD", StdDraw.GREEN);
+        colors.put("REMOVE", StdDraw.RED);
+        colors.put("ITERATE", StdDraw.CYAN);
+        colors.put("FILLED", StdDraw.WHITE);
+        colors.put("EMPTY", StdDraw.GRAY);
     }
 
-    public String getColor(String color){
+    public Color getColor(String color){
         return colors.get(color);
     }
 

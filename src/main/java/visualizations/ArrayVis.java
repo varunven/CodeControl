@@ -49,7 +49,7 @@ public class ArrayVis<T> {
         array[index] = data;
         ArrayCellBlock toAdd = new ArrayCellBlock();
         blockList.add(index, toAdd);
-        blockList.get(index).setColor(colors.getColor("ADD"));
+        blockList.get(index).setColor("ADD");
         //draw the block
         size++;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
@@ -60,7 +60,7 @@ public class ArrayVis<T> {
     public T remove(int index){
         T oldData = array[index];
         array[index] = null;
-        blockList.get(index).setColor(colors.getColor("REMOVE"));
+        blockList.get(index).setColor("REMOVE");
         blockList.set(index, null);
         size--;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
@@ -92,5 +92,19 @@ public class ArrayVis<T> {
         NO
     }
 
+    public void draw(int rank, double h){
+        double indexW = 1.0/capacity;
+        for(int i=0; i<capacity; i++){
+            double xStart = i*indexW;
+            double xEnd = xStart+indexW;
+            double[] xRay = {xStart, xEnd};
+            double yTop = h*rank;
+            double yBottom = yTop + h;
+            double[] yRay = {yTop, yBottom};
+            StdDraw.setPenColor(blockList.get(i).getCellColor());
+            StdDraw.filledPolygon(xRay, yRay);
+            StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
+        }
+    }
 
 }
