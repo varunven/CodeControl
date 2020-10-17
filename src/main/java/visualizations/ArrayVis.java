@@ -84,7 +84,5 @@ public class ArrayVis<T> {
         NO
     }
 
-    public void drawCanvas(double x, double y){
-    }
 
 }
