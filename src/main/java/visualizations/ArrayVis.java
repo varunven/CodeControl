@@ -1,11 +1,13 @@
 package visualizations;
 
 import StdDraw.StdDraw;
+import unitVisualizations.ArrayCellBlock;
+import java.util.List;
 
 public class ArrayVis<T> {
 
-
     private T[] array;
+    private List<ArrayCellBlock> blockList;
     private int size;
     private int capacity;
 
@@ -34,31 +36,41 @@ public class ArrayVis<T> {
          */
     }
 
-    public void add(T element, int index){
-        array[index] = element;
+    public void add(T data, int index){
+        array[index] = data;
+        ArrayCellBlock toAdd = new ArrayCellBlock(capacity, size);
+        toAdd.addToBlock(data);
+        blockList.add(index, toAdd);
+        //draw the block
         size++;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
             resize();
         }
-    }
-    public T remove(int index){
-        T oldEl = array[index];
-        array[index] = null;
-        size++;
-        if(needsResize(capacity, size).equals(Resize.SMALL)){
-            resize();
-        }
-        return oldEl;
     }
 
-    public T get(int index){
+    public T remove(int index){
+        T oldData = array[index];
+        array[index] = null;
+        ArrayCellBlock toRemove = blockList.get(index);
+        toRemove.removeFromBlock();
+        blockList.remove(index);
+        size--;
+        if(needsResize(capacity, size).equals(Resize.SMALL)){
+            resize();
+        }
+        return oldData;
+    }
+
+    public T getElement(int index){
         return array[index];
     }
 
-    public T replace(T element, int index){
-        T oldEl = array[index];
-        array[index] = element;
-        return oldEl;
+    public ArrayCellBlock getBlock(int index){ return blockList.get(index); }
+
+    public T replace(T data, int index){
+        T oldData = remove(index);
+        add(data, index);
+        return oldData;
     }
 
     private void resize(){

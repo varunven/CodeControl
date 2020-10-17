@@ -9,8 +9,6 @@ public class ArrayCellBlock <T> {
     public static final int CELL_HEIGHT = 2;
     //data text- adjust with cell width and height
     public static final int TEXT_SIZE = 1;
-    //currently selected- boolean value with color representation. different color for different operation
-    //different markers for null vs filled value
 
     private int width;
     private int height;
@@ -19,11 +17,10 @@ public class ArrayCellBlock <T> {
     private T data;
     private Colors colors;
 
-    public ArrayCellBlock(int capacity, int size, T data){
+    public ArrayCellBlock(int capacity, int size){
         width = CELL_WIDTH;
         height = CELL_HEIGHT;
         textSize = TEXT_SIZE;
-        this.data = data;
         this.colors = new Colors();
         this.cellColor = colors.getColor("EMPTY");
     }
@@ -45,9 +42,12 @@ public class ArrayCellBlock <T> {
         return temp;
     }
 
-    public void updateCellParameters(int newCapacity){
-        //update width, height, textsize based on capacity
-        //should zoom be a physical zoom or just change width height based on how many times they moved their hands
+    public void updateWidth(int newWidth, int newHeight){
+        //update width and height based on new parameters
+        this.width = newWidth;
+        this.height = newHeight;
+        //update textsize to constrain between width and height
+        this.textSize = Math.min(width, height);
     }
 
     public int getCellWidth(){ return width; }
