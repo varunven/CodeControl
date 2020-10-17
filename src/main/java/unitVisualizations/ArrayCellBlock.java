@@ -1,5 +1,7 @@
 package unitVisualizations;
 
+import colors.Colors;
+
 public class ArrayCellBlock <T> {
 
     //fixed width, height proportions- adjust with array size
@@ -8,17 +10,18 @@ public class ArrayCellBlock <T> {
     //data text- adjust with cell width and height
     public static final int TEXT_SIZE = 1;
     //currently selected- boolean value with color representation. different color for different operation
-    public static final String ADD = "#008000";
-    public static final String REMOVE = "#FF0000";
+    public static final String ADD_COLOR = "#008000";
+    public static final String REMOVE_COLOR = "#FF0000";
     //different markers for null vs filled value
-    public static final String FILLED = "white";
-    public static final String EMPTY = "gray";
+    public static final String FILLED_COLOR = "white";
+    public static final String EMPTY_COLOR = "gray";
 
     private int width;
     private int height;
     private int textSize;
     private int capacity;
     private String cellColor;
+    private int index;
     private T data;
 
     public ArrayCellBlock(int capacity, int size, T data){
@@ -26,22 +29,16 @@ public class ArrayCellBlock <T> {
         width = CELL_WIDTH;
         height = CELL_HEIGHT;
         textSize = TEXT_SIZE;
-        cellColor = EMPTY;
+        cellColor = EMPTY_COLOR;
         this.data = data;
     }
 
-    public Resize needsResize(int capacity, int size){
-        if(size==capacity && capacity>10){
-            return Resize.LARGE;
-        }
-        if(size <= capacity/4 && capacity>10){
-            return Resize.SMALL;
-        }
-        return Resize.NO;
+    public void changeColor(Colors color){
+
     }
 
-    public <T> void addToBlock(T data){
-        if(needsResize())
+    public <T> void addToBlock(T data, int capacity, int size){
+        this.cellColor = ADD_COLOR;
     }
 
     public void updateCapacity(int newCapacity){
@@ -50,11 +47,4 @@ public class ArrayCellBlock <T> {
         //should zoom be a physical zoom or just change width height based on how many times they moved their hands
 
     }
-
-    private enum Resize{
-        LARGE,
-        SMALL,
-        NO
     }
-
-}
