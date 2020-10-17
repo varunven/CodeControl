@@ -73,7 +73,9 @@ public class ArrayVis<T> {
         return array[index];
     }
 
-    public ArrayCellBlock getBlock(int index){ return blockList.get(index); }
+    public ArrayCellBlock getBlock(int index){
+        return blockList.get(index);
+    }
 
     public T replace(T data, int index){
         T oldData = remove(index);
