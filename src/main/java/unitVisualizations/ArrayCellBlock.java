@@ -10,45 +10,43 @@ public class ArrayCellBlock <T> {
     //data text- adjust with cell width and height
     public static final int TEXT_SIZE = 1;
     //currently selected- boolean value with color representation. different color for different operation
-    public static final String ADD_COLOR = "#008000";
-    public static final String REMOVE_COLOR = "#FF0000";
     //different markers for null vs filled value
-    public static final String FILLED_COLOR = "white";
-    public static final String EMPTY_COLOR = "gray";
 
     private int width;
     private int height;
     private int textSize;
-    private int capacity;
     private String cellColor;
-    private int index;
     private T data;
+    private Colors colors;
 
     public ArrayCellBlock(int capacity, int size, T data){
-        this.capacity = capacity;
         width = CELL_WIDTH;
         height = CELL_HEIGHT;
         textSize = TEXT_SIZE;
-        cellColor = EMPTY_COLOR;
+        this.data = data;
+        this.colors = new Colors();
+        this.cellColor = colors.getColor("EMPTY");
+    }
+
+    public String changeColor(String colorName){
+        this.cellColor = colors.getColor(colorName);
+        return cellColor;
+    }
+
+    public void addToBlock(T data){
+        this.cellColor = colors.getColor("ADD");
         this.data = data;
     }
 
-    public void changeColor(Colors color){
-
+    public T removeFromBlock(){
+        this.cellColor = colors.getColor("REMOVE");
+        T temp = this.data;
+        this.data = null;
+        return temp;
     }
 
-    public <T> void addToBlock(T data, int capacity, int size){
-        this.cellColor = ADD_COLOR;
-    }
-
-    public void updateCapacity(int newCapacity){
-        capacity = newCapacity;
-        //update width, height, textsize
+    public void updateCellParameters(int newCapacity){
+        //update width, height, textsize based on capacity
         //should zoom be a physical zoom or just change width height based on how many times they moved their hands
-
-    }
-
-    public void remove(){
-        changeColor("Red");
     }
 }

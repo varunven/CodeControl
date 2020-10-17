@@ -8,11 +8,11 @@ public class Colors {
 
     public Colors(){
         colors = new HashMap<>();
-        colors.put("Green", "#008000");
-        colors.put("Red", "#FF0000");
-        colors.put("White", "#FFFFFF");
-        colors.put("Gray", "#808080");
-        colors.put("Grey", "#808080");
+        colors.put("ADD", "#008000");
+        colors.put("REMOVE", "#FF0000");
+        colors.put("ITERATE", "#87CEEB");
+        colors.put("FILLED", "#FFFFFF");
+        colors.put("EMPTY", "#808080");
     }
 
     public String getColor(String color){
