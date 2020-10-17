@@ -1,5 +1,6 @@
 package visualizations;
 import java.awt.*;
+import StdDraw.StdDraw;
 public class ArrayVis<T> {
 
 
@@ -68,6 +69,9 @@ public class ArrayVis<T> {
         LARGE,
         SMALL,
         NO
+    }
+
+    public void drawCanvas(double x, double y){
     }
 
 }
