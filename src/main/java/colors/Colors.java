@@ -3,6 +3,8 @@ package colors;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class Colors {
     private Map<String, String> colors;
 
@@ -18,5 +20,6 @@ public class Colors {
     public String getColor(String color){
         return colors.get(color);
     }
+
 
 }

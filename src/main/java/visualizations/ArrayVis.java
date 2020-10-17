@@ -1,6 +1,7 @@
 package visualizations;
-
+import java.awt.*;
 public class ArrayVis<T> {
+
 
     private T[] array;
     private int size;
@@ -68,4 +69,5 @@ public class ArrayVis<T> {
         SMALL,
         NO
     }
+
 }
