@@ -1,7 +1,6 @@
 package unitVisualizations;
 
 import colors.Colors;
-import java.awt.*;
 
 public class ArrayCellBlock <T> {
 
@@ -50,4 +49,9 @@ public class ArrayCellBlock <T> {
         //update width, height, textsize based on capacity
         //should zoom be a physical zoom or just change width height based on how many times they moved their hands
     }
+
+    public int getCellWidth(){ return width; }
+    public int getCellHeight(){ return height; }
+    public int getTextSize(){ return textSize; }
+
 }

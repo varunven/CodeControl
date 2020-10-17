@@ -1,6 +1,7 @@
 package visualizations;
-import java.awt.*;
+
 import StdDraw.StdDraw;
+
 public class ArrayVis<T> {
 
 

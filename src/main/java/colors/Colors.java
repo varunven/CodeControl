@@ -3,8 +3,6 @@ package colors;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 public class Colors {
     private Map<String, String> colors;
 
