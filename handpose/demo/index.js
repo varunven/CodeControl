@@ -24,11 +24,9 @@ tfjsWasm.setWasmPath(
     `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
         tfjsWasm.version_wasm}/dist/tfjs-backend-wasm.wasm`);
 
-function isMobile() {
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  return isAndroid || isiOS;
-}
+// const motionFrame = [];
+let swipeTop = false;
+let currGesture = -1;
 
 let videoWidth, videoHeight, rafID, ctx, canvas, ANCHOR_POINTS,
     scatterGLHasInitialized = false, scatterGL, fingerLookupIndices = {
@@ -36,18 +34,16 @@ let videoWidth, videoHeight, rafID, ctx, canvas, ANCHOR_POINTS,
       indexFinger: [0, 5, 6, 7, 8],
       middleFinger: [0, 9, 10, 11, 12],
       ringFinger: [0, 13, 14, 15, 16],
-      pinky: [0, 17, 18, 19, 20]
-    };  // for rendering each finger as a polyline
+      pinky: [0, 17, 18, 19, 20],
+    }; // for rendering each finger as a polyline
 
 const VIDEO_WIDTH = 640;
 const VIDEO_HEIGHT = 500;
-const mobile = isMobile();
-// Don't render the point cloud on mobile in order to maximize performance and
-// to avoid crowding limited screen space.
-const renderPointcloud = mobile === false;
+
+const renderPointcloud = false;
 
 const state = {
-  backend: 'webgl'
+  backend: 'webgl',
 };
 
 const stats = new Stats();
@@ -55,25 +51,9 @@ stats.showPanel(0);
 document.body.appendChild(stats.dom);
 
 if (renderPointcloud) {
-  state.renderPointcloud = true;
+  state.renderPointcloud = false;
 }
 
-function setupDatGui() {
-  const gui = new dat.GUI();
-  gui.add(state, 'backend', ['webgl', 'wasm'])
-      .onChange(async backend => {
-        window.cancelAnimationFrame(rafID);
-        await tf.setBackend(backend);
-        landmarksRealTime(video);
-      });
-
-  if (renderPointcloud) {
-    gui.add(state, 'renderPointcloud').onChange(render => {
-      document.querySelector('#scatter-gl-container').style.display =
-          render ? 'inline-block' : 'none';
-    });
-  }
-}
 
 function drawPoint(y, x, r) {
   ctx.beginPath();
@@ -93,7 +73,7 @@ function drawKeypoints(keypoints) {
   const fingers = Object.keys(fingerLookupIndices);
   for (let i = 0; i < fingers.length; i++) {
     const finger = fingers[i];
-    const points = fingerLookupIndices[finger].map(idx => keypoints[idx]);
+    const points = fingerLookupIndices[finger].map((idx) => keypoints[idx]);
     drawPath(points, false);
   }
 }
@@ -125,10 +105,9 @@ async function setupCamera() {
     'audio': false,
     'video': {
       facingMode: 'user',
-      // Only setting the video to a specified size in order to accommodate a
-      // point cloud, so on mobile devices accept the default size.
-      width: mobile ? undefined : VIDEO_WIDTH,
-      height: mobile ? undefined : VIDEO_HEIGHT
+      frameRate: {ideal: 15, max: 15},
+      width: VIDEO_WIDTH,
+      height: VIDEO_HEIGHT,
     },
   });
   video.srcObject = stream;
@@ -148,7 +127,7 @@ async function loadVideo() {
 
 async function main() {
   await tf.setBackend(state.backend);
-  model = await handpose.load();
+  model = await handpose.load({detectionConfidence: 0.8});
   let video;
 
   try {
@@ -159,8 +138,6 @@ async function main() {
     info.style.display = 'block';
     throw e;
   }
-
-  setupDatGui();
 
   videoWidth = video.videoWidth;
   videoHeight = video.videoHeight;
@@ -173,8 +150,8 @@ async function main() {
 
   ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, videoWidth, videoHeight);
-  ctx.strokeStyle = 'red';
-  ctx.fillStyle = 'red';
+  ctx.strokeStyle = 'white';
+  ctx.fillStyle = 'blue';
 
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
@@ -183,17 +160,9 @@ async function main() {
   // position in the input.
   ANCHOR_POINTS = [
     [0, 0, 0], [0, -VIDEO_HEIGHT, 0], [-VIDEO_WIDTH, 0, 0],
-    [-VIDEO_WIDTH, -VIDEO_HEIGHT, 0]
+    [-VIDEO_WIDTH, -VIDEO_HEIGHT, 0],
   ];
 
-  if (renderPointcloud) {
-    document.querySelector('#scatter-gl-container').style =
-        `width: ${VIDEO_WIDTH}px; height: ${VIDEO_HEIGHT}px;`;
-
-    scatterGL = new ScatterGL(
-        document.querySelector('#scatter-gl-container'),
-        {'rotateOnStart': false, 'selectEnabled': false});
-  }
 
   landmarksRealTime(video);
 }
@@ -205,35 +174,33 @@ const landmarksRealTime = async (video) => {
         video, 0, 0, videoWidth, videoHeight, 0, 0, canvas.width,
         canvas.height);
     const predictions = await model.estimateHands(video);
+
+
     if (predictions.length > 0) {
       const result = predictions[0].landmarks;
       drawKeypoints(result, predictions[0].annotations);
 
-      if (renderPointcloud === true && scatterGL != null) {
-        const pointsData = result.map(point => {
-          return [-point[0], -point[1], -point[2]];
-        });
+      console.log(predictions);
 
-        const dataset =
-            new ScatterGL.Dataset([...pointsData, ...ANCHOR_POINTS]);
+      const palmTop = predictions[0].boundingBox['topLeft'][1];
 
-        if (!scatterGLHasInitialized) {
-          scatterGL.render(dataset);
+      console.log('PALM TOP'+palmTop);
 
-          const fingers = Object.keys(fingerLookupIndices);
+      if (palmTop<-100) {
+        swipeTop = true;
+        currGesture = 150;
+      }
 
-          scatterGL.setSequences(
-              fingers.map(finger => ({indices: fingerLookupIndices[finger]})));
-          scatterGL.setPointColorer((index) => {
-            if (index < pointsData.length) {
-              return 'steelblue';
-            }
-            return 'white';  // Hide.
-          });
-        } else {
-          scatterGL.updateDataset(dataset);
+      if (swipeTop) {
+        if (palmTop>120) {
+          console.log('STEP INTO');
+          currGesture=0;
         }
-        scatterGLHasInitialized = true;
+
+        currGesture-=1;
+        if (currGesture<=0) {
+          swipeTop=false;
+        }
       }
     }
     stats.end();
