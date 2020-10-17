@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 public class ArrayVisTests<T> extends TestCase{
 
-    int[] intArr = {1, 2, 3};
+    Integer[] intArr = {1, 2, 3};
     String[] stringArr = {"1", "234", "56789"};
-    int[] emptyArr = {};
-    int[] longArr = {1, 2, 3, 4, 5, 6, 7};
-    int[] alternatingValuesArray = setAlternatingArray();
+    Integer[] emptyArr = {};
+    Integer[] longArr = {1, 2, 3, 4, 5, 6, 7};
+    Integer[] alternatingValuesArray = setAlternatingArray();
 
-    private int[] setAlternatingArray(){
-        int[] arr = new int[6];
+    private Integer[] setAlternatingArray(){
+        Integer[] arr = new Integer[6];
         for(int i=0; i<6; i++){
             if(i%2==0){
                 arr[i] =i;
