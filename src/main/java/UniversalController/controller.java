@@ -19,7 +19,6 @@ public class controller {
     }
     public <T> void makeArray(T[] ary, double height){
         ArrayVis vis = new ArrayVis (ary);
-
     }
     public void debug(){
 

@@ -38,7 +38,7 @@ public class ArrayVis<T> {
 
     public void add(T data, int index){
         array[index] = data;
-        ArrayCellBlock toAdd = new ArrayCellBlock(capacity, size);
+        ArrayCellBlock toAdd = new ArrayCellBlock();
         toAdd.addToBlock(data);
         blockList.add(index, toAdd);
         //draw the block
