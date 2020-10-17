@@ -47,4 +47,8 @@ public class ArrayCellBlock <T> {
         //should zoom be a physical zoom or just change width height based on how many times they moved their hands
 
     }
+
+    public void remove(){
+        changeColor("Red");
     }
+}
