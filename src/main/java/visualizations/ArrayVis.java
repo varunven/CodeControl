@@ -31,10 +31,6 @@ public class ArrayVis<T> {
          */
     }
 
-    public void resize(){
-
-    }
-
     public void add(T element, int index){
         array[index] = element;
         size++;
@@ -42,12 +38,28 @@ public class ArrayVis<T> {
             resize();
         }
     }
-    public void Remove(T element, int index){
-        array[index] = element;
+    public T remove(int index){
+        T oldEl = array[index];
+        array[index] = null;
         size++;
         if(needsResize(capacity, size).equals(Resize.SMALL)){
             resize();
         }
+        return oldEl;
+    }
+
+    public T get(int index){
+        return array[index];
+    }
+
+    public T replace(T element, int index){
+        T oldEl = array[index];
+        array[index] = element;
+        return oldEl;
+    }
+
+    private void resize(){
+
     }
 
     //shows if resize big, resize small, or don't resize
