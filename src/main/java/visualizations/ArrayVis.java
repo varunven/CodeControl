@@ -1,7 +1,6 @@
 package visualizations;
 
 import StdDraw.StdDraw;
-import colors.Colors;
 import unitVisualizations.ArrayCellBlock;
 
 import java.awt.*;
