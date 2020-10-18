@@ -40,8 +40,18 @@ public class controller {
         StdDraw.show();
     }
 
+    public static void emptyArrTest(){
+        ArrayVis emptyVis = new ArrayVis(emptyArr, 0.1, 1);
+        Integer[] newEmpty = new Integer[10];
+        newEmpty[0] = 7;
+        ArrayVis newVis = new ArrayVis(newEmpty, 0.1, 1);
+        emptyVis.add(7, 0);
+        System.out.println(emptyVis.equals(newVis));
+    }
+
     public static void main(String args[]){
         StdDraw.disableDoubleBuffering();
         longArrTest();
+        emptyArrTest();
     }
 }

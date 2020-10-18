@@ -16,7 +16,6 @@ public class ArrayCellBlock <T> {
 
     public void setColor(String colorName){
         this.cellColor = colors.getColor(colorName);
-
     }
 
     public Color getCellColor(){

@@ -11,9 +11,7 @@ public class ArrayVis<T> {
 
     private T[] array;
     private List<ArrayCellBlock> blockList;
-    private int size;
     private int capacity;
-    private Colors colors;
     private double h;
     private int rank;
 
@@ -25,7 +23,6 @@ public class ArrayVis<T> {
             blockList.add(new ArrayCellBlock<>());
             blockList.get(i).setColor("ADD");
         }
-        this.colors = new Colors();
         this.h = height;
         this.rank = rank;
         this.draw();
@@ -37,7 +34,8 @@ public class ArrayVis<T> {
         blockList.add(index, toAdd);
         blockList.get(index).setColor("ADD");
         this.changeCellColor(index);
-        size++;
+        blockList.get(index).setColor("FILLED");
+        this.changeCellColor(index);
     }
 
     public T remove(int index){
@@ -45,7 +43,8 @@ public class ArrayVis<T> {
         array[index] = null;
         blockList.get(index).setColor("REMOVE");
         this.changeCellColor(index);
-        size--;
+        blockList.get(index).setColor("EMPTY");
+        this.changeCellColor(index);
         return oldData;
     }
 
@@ -67,7 +66,11 @@ public class ArrayVis<T> {
         double indexW = 1.0/(capacity * 1.0);
         for(int i=0; i<capacity; i++){
             drawHelper(i, indexW);
+            if(i>0){
+                undoPrev(i-1, indexW);
+            }
         }
+        undoPrev(array.length-1, indexW);
     }
 
     private void changeCellColor(int i){
@@ -88,5 +91,23 @@ public class ArrayVis<T> {
         StdDraw.setPenRadius(0.003);
         StdDraw.polygon(xRay, yRay);
         StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
+        StdDraw.pause(500);
+    }
+
+    private void undoPrev(int i, double indexW){
+        double xStart = i*indexW;
+        double xEnd = xStart+indexW;
+        double[] xRay = {xStart, xEnd, xEnd, xStart};
+        double yTop = 1 - (h*rank);
+        double yBottom = (yTop - h);
+        double[] yRay = {yTop, yTop, yBottom, yBottom};
+        blockList.get(i).setColor("FILLED");
+        StdDraw.setPenColor(blockList.get(i).getCellColor());
+        StdDraw.filledPolygon(xRay, yRay);
+        StdDraw.setPenColor();
+        StdDraw.setPenRadius(0.003);
+        StdDraw.polygon(xRay, yRay);
+        StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
+        StdDraw.pause(500);
     }
 }
