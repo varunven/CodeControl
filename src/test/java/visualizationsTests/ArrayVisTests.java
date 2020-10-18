@@ -1,5 +1,7 @@
 package visualizationsTests;
 
+import StdDraw.StdDraw;
+import org.junit.Before;
 import visualizations.ArrayVis;
 
 import org.junit.Test;
@@ -37,17 +39,24 @@ public class ArrayVisTests<T> extends TestCase{
         return arr;
     }
 
+    @Before
+    public void setup(){
+        //StdDraw.enableDoubleBuffering();
+    }
+
     //construction and drawing tests
 
     @Test
     public void emptyArrTest(){
         ArrayVis emptyVis = new ArrayVis(emptyArr);
         emptyVis.draw(1, 1);
+        StdDraw.show();
     }
     @Test
     public void longArrTest(){
         ArrayVis longVis = new ArrayVis(longArr);
         longVis.draw(1, 1);
+        StdDraw.show();
     }
     @Test
     public void multipleArrTypesTest(){
@@ -55,11 +64,13 @@ public class ArrayVisTests<T> extends TestCase{
         ArrayVis stringVis = new ArrayVis(stringArr);
         intVis.draw(1, .5);
         intVis.draw(2, .5);
+        StdDraw.show();
     }
     @Test
     public void alternatingValuesTest(){
         ArrayVis alternativeValuesVis = new ArrayVis(alternatingValuesArray);
         alternativeValuesVis.draw(1, 1);
+        StdDraw.show();
     }
 
     //adding and drawing tests
@@ -67,23 +78,27 @@ public class ArrayVisTests<T> extends TestCase{
     public void emptyAdd(){
         ArrayVis emptyVis = new ArrayVis(emptyArr);
         emptyVis.add("data", 0);
+        StdDraw.show();
     }
 
     @Test
     public void addOutOfBounds(){
         ArrayVis longVis = new ArrayVis(longArr);
         longVis.add("data", longArr.length+1);
+        StdDraw.show();
     }
 
     public void addAlreadyTaken(){
         ArrayVis semiFullVis = new ArrayVis(semiFullArr);
         semiFullVis.add("data", 4);
+        StdDraw.show();
     }
 
     @Test
     public void SemiFullAdd(){
         ArrayVis semiFullVis = new ArrayVis(semiFullArr);
         semiFullVis.add("data", 8);
+        StdDraw.show();
     }
 
 }

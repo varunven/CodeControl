@@ -18,11 +18,8 @@ public class ArrayVis<T> {
     public ArrayVis(T[] array){
         this.array = array;
         this.capacity = array.length;
-        if(array.length <= 10){
-            this.capacity = 10;
-        }
         this.blockList = new ArrayList<>();
-        for(int i = 0;i<array.length;i++){
+        for(int i = 0;i<capacity;i++){
             blockList.add(new ArrayCellBlock<>());
             blockList.get(i).setColor("ADD");
         }
@@ -74,7 +71,6 @@ public class ArrayVis<T> {
 
     public void draw(int rank, double h){
         double indexW = 1.0/(capacity * 1.0);
-        StdDraw.setPenRadius(20);
         for(int i=0; i<capacity; i++){
             double xStart = i*indexW;
             double xEnd = xStart+indexW;
@@ -85,6 +81,8 @@ public class ArrayVis<T> {
             StdDraw.setPenColor(blockList.get(i).getCellColor());
             StdDraw.filledPolygon(xRay, yRay);
             StdDraw.setPenColor();
+            StdDraw.setPenRadius(0.003);
+            StdDraw.polygon(xRay, yRay);
             StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
         }
     }
