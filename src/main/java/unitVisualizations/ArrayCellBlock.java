@@ -22,4 +22,6 @@ public class ArrayCellBlock <T> {
         return this.cellColor;
     }
 
+    public T getData(){ return this.data;   }
+
 }

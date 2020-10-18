@@ -8,6 +8,8 @@ import java.util.List;
 
 public class controller {
 
+    private static String code;
+
 //    private static Object[] makeForLoop(String line){
 //        //replace in the line any ++ with +=1, any -- with -=1
 //        line = line.replace("++", "+=1");
@@ -105,7 +107,9 @@ public class controller {
         File file = new File(testFile);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
+        code = "";
         while((line = reader.readLine()) != null){
+            code += line;
             List<Object> arrs = readFile(testFile, line); //arr name to values
             if(arrs.size()!=0) {
                 if (!vises.containsKey(arrs.get(0))) {
