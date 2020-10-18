@@ -119,5 +119,4 @@ public class ArrayVis<T> {
             StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
         }
     }
-
 }
