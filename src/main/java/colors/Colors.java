@@ -20,5 +20,4 @@ public class Colors {
         return colors.get(color);
     }
 
-
 }
