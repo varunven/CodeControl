@@ -1,7 +1,6 @@
 package unitVisualizations;
 
 import colors.Colors;
-
 import java.awt.*;
 
 public class ArrayCellBlock <T> {
