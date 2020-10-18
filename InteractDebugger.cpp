@@ -1,10 +1,9 @@
 #include <iostream>
 #include <windows.h>
-#include <psapi.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <winuser.h>
 using namespace std;
-
 
 void F(int keyCode) {
     keybd_event(keyCode, 0, 0, 0);
@@ -36,6 +35,13 @@ void SHIFT(int f) {
     keybd_event(16, 0, 0, 0);
     F(f);
     keybd_event(16, 0, KEYEVENTF_KEYUP, 0);
+
+}
+void Copy() {
+    keybd_event(17, 0, 0, 0);
+    keybd_event(67, 0, 0, 0);
+    keybd_event(67, 0, KEYEVENTF_KEYUP, 0);
+    keybd_event(17, 0, KEYEVENTF_KEYUP, 0);
 
 }
 void CTRL(int f, BOOL shift) {
@@ -75,7 +81,29 @@ void CallCommand(string command) {
   else if (shift) {
       SHIFT(fn);
   }
-  F(fn);
+  else {
+      F(fn);
+  } 
+  Copy();
+}
+void BailOut()
+{
+    fprintf(stderr, "Exiting\n");
+    exit(EXIT_FAILURE);
+}
+
+void ReadClipboardData()
+{
+    HANDLE h;
+
+    if (!OpenClipboard(NULL))
+        BailOut();
+
+    h = GetClipboardData(CF_TEXT);
+
+    printf("%s\n", (char*)h);
+
+    CloseClipboard();
 }
 int main(int argc, char* argv[])
 {
@@ -83,8 +111,10 @@ int main(int argc, char* argv[])
         cout << "Please pass in the correct number of arguments\n";
         return EXIT_FAILURE;
     }
-    int pid = atoi("14476");
+    int pid = atoi(argv[1]);
     string command = argv[2];
     BringToForeground(pid);
     CallCommand(command);
+    ReadClipboardData();
+
 }   
