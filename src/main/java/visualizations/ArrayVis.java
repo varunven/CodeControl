@@ -4,6 +4,7 @@ import StdDraw.StdDraw;
 import colors.Colors;
 import unitVisualizations.ArrayCellBlock;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class ArrayVis<T> {
     }
 
     private void drawHelper(int i, double indexW){
+        StdDraw.setFont(new Font("Sans Serif", Font.PLAIN, 16*10/capacity));
         double xStart = i*indexW;
         double xEnd = xStart+indexW;
         double[] xRay = {xStart, xEnd, xEnd, xStart};
@@ -95,6 +97,7 @@ public class ArrayVis<T> {
     }
 
     private void undoPrev(int i, double indexW){
+        StdDraw.setFont(new Font("Sans Serif", Font.PLAIN, 16*10/capacity));
         double xStart = i*indexW;
         double xEnd = xStart+indexW;
         double[] xRay = {xStart, xEnd, xEnd, xStart};
