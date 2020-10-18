@@ -3,9 +3,8 @@ import StdDraw.StdDraw;
 import visualizations.ArrayVis;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 public class controller {
 
@@ -57,7 +56,7 @@ public class controller {
                 line = line.replaceAll("\\s", "");
                 if (line.contains("=")) {
                     //constructors of array
-                    if(line.contains("[]")){
+                    if(line.contains("[]") && !line.contains("{")){
                         int first = line.indexOf("[");
                         int second = line.indexOf("[", first + 1);
                         String arrayName = line.substring(first+2, line.indexOf("="));
@@ -121,6 +120,5 @@ public class controller {
             }
             rank += 1;
         }
-        StdDraw.show();
     }
 }

@@ -124,4 +124,8 @@ public class ArrayVis<T> {
         StdDraw.text((xStart+xEnd)/2, (yTop+yBottom)/2, ""+array[i]);
         StdDraw.pause(500);
     }
+
+    public int getRank(){
+        return rank;
+    }
 }
