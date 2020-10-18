@@ -17,16 +17,21 @@
 
 import * as handpose from '@tensorflow-models/handpose';
 import * as tf from '@tensorflow/tfjs-core';
-import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
+// import '@tensorflow/tfjs-backend-cpu';
+// import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
-
-tfjsWasm.setWasmPath(
-    `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
-        tfjsWasm.version_wasm}/dist/tfjs-backend-wasm.wasm`);
+//
+// tfjsWasm.setWasmPath(
+//     `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
+//         tfjsWasm.version_wasm}/dist/tfjs-backend-wasm.wasm`);
 
 // const motionFrame = [];
 let swipeTop = false;
+let swipeLeft = false;
 let currGesture = -1;
+
+// const shell = require('shelljs');
+
 
 let videoWidth, videoHeight, rafID, ctx, canvas, ANCHOR_POINTS,
     scatterGLHasInitialized = false, scatterGL, fingerLookupIndices = {
@@ -37,18 +42,18 @@ let videoWidth, videoHeight, rafID, ctx, canvas, ANCHOR_POINTS,
       pinky: [0, 17, 18, 19, 20],
     }; // for rendering each finger as a polyline
 
-const VIDEO_WIDTH = 640;
-const VIDEO_HEIGHT = 500;
+const VIDEO_WIDTH = 1280;
+const VIDEO_HEIGHT = 1000;
 
 const renderPointcloud = false;
 
 const state = {
   backend: 'webgl',
 };
-
-const stats = new Stats();
-stats.showPanel(0);
-document.body.appendChild(stats.dom);
+//
+// const stats = new Stats();
+// stats.showPanel(0);
+// document.body.appendChild(stats.dom);
 
 if (renderPointcloud) {
   state.renderPointcloud = false;
@@ -127,7 +132,7 @@ async function loadVideo() {
 
 async function main() {
   await tf.setBackend(state.backend);
-  model = await handpose.load({detectionConfidence: 0.8});
+  model = await handpose.load({detectionConfidence: 0.5});
   let video;
 
   try {
@@ -169,7 +174,7 @@ async function main() {
 
 const landmarksRealTime = async (video) => {
   async function frameLandmarks() {
-    stats.begin();
+    // stats.begin();
     ctx.drawImage(
         video, 0, 0, videoWidth, videoHeight, 0, 0, canvas.width,
         canvas.height);
@@ -183,17 +188,21 @@ const landmarksRealTime = async (video) => {
       console.log(predictions);
 
       const palmTop = predictions[0].boundingBox['topLeft'][1];
+      // const palmSide = predictions[0].boundingBox['bottomRight'][0];
 
-      console.log('PALM TOP'+palmTop);
+      // console.log('PALM TOP'+palmTop);
 
-      if (palmTop<-100) {
+      if (palmTop<-100 && !swipeLeft) {
         swipeTop = true;
-        currGesture = 150;
+        currGesture = 200;
       }
 
-      if (swipeTop) {
-        if (palmTop>120) {
+      if (swipeTop && !swipeLeft) {
+        if (palmTop>10) {
           console.log('STEP INTO');
+          // const output = await exec('ls', {encoding: 'utf-8'}); // the default is 'buffer'
+          // console.log('Output was:\n', output);
+
           currGesture=0;
         }
 
@@ -202,8 +211,25 @@ const landmarksRealTime = async (video) => {
           swipeTop=false;
         }
       }
+
+      // if (palmSide < 600 && !swipeTop) {
+      //   swipeTop = true;
+      //   currGesture = 200;
+      // }
+
+      // if (swipeLeft && !swipeTop) {
+      //   if (palmSide>1200) {
+      //     console.log('STEP OVER');
+      //     currGesture=0;
+      //   }
+      //
+      //   currGesture-=1;
+      //   if (currGesture<=0) {
+      //     swipeTop=false;
+      //   }
+      // }
     }
-    stats.end();
+    // stats.end();
     rafID = requestAnimationFrame(frameLandmarks);
   };
 
