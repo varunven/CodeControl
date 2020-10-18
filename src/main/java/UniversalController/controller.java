@@ -10,6 +10,7 @@ public class controller {
         ArrayVis longVis = new ArrayVis(longArr, 0.1, 5);
         longVis.remove(0);
         longVis.add(5, 0);
+        longVis.clearDataStructure();
         StdDraw.show();
     }
 

@@ -79,6 +79,18 @@ public class ArrayVis<T> {
         drawHelper(i, indexW);
     }
 
+    public void clearDataStructure(){
+        StdDraw.setPenColor(StdDraw.WHITE);
+        double xStart = 0;
+        double xEnd = 1;
+        double[] xRay = {xStart, xEnd, xEnd, xStart};
+        double yTop = 1 - (h*rank);
+        double yBottom = (yTop - h);
+        double[] yRay = {yTop, yTop, yBottom, yBottom};
+        StdDraw.filledPolygon(xRay, yRay);
+        StdDraw.polygon(xRay, yRay);
+    }
+
     private void drawHelper(int i, double indexW){
         StdDraw.setFont(new Font("Sans Serif", Font.PLAIN, 16*10/capacity));
         double xStart = i*indexW;
