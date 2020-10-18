@@ -86,10 +86,4 @@ public class ArrayVisTests<T> extends TestCase{
         semiFullVis.add("data", 8);
     }
 
-    @Test
-    public void FilledArrayAdd(){
-        ArrayVis longVis = new ArrayVis(longArr);
-        longVis.add("data");
-    }
-
 }

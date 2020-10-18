@@ -7,7 +7,7 @@ import unitVisualizations.ArrayCellBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayVis<T> {
+public class ArrayListVis<T> {
 
     private T[] array;
     private List<ArrayCellBlock> blockList;
@@ -15,7 +15,7 @@ public class ArrayVis<T> {
     private int capacity;
     private Colors colors;
 
-    public ArrayVis(T[] array){
+    public ArrayListVis(T[] array){
         this.array = array;
         this.capacity = array.length;
         if(array.length <= 10){
@@ -40,6 +40,10 @@ public class ArrayVis<T> {
          */
     }
 
+    public void add(T data){
+        add(data, size);
+    }
+
     public void add(T data, int index){
         array[index] = data;
         ArrayCellBlock toAdd = new ArrayCellBlock();
@@ -47,7 +51,26 @@ public class ArrayVis<T> {
         blockList.get(index).setColor("ADD");
         //draw the block
         size++;
+        if(needsResize(capacity, size).equals(Resize.SMALL)){
+            resize();
+        }
     }
+
+    public T remove(){
+        return remove(size);
+    }
+
+    private Resize needsResize(int capacity, int size){
+        if(size==capacity && capacity>10){
+            return ArrayListVis.Resize.LARGE;
+        }
+        if(size <= capacity/4 && capacity>10){
+            return ArrayListVis.Resize.SMALL;
+        }
+        return ArrayListVis.Resize.NO;
+    }
+
+
 
     public T remove(int index){
         T oldData = array[index];
@@ -55,6 +78,9 @@ public class ArrayVis<T> {
         blockList.get(index).setColor("REMOVE");
         blockList.set(index, null);
         size--;
+        if(needsResize(capacity, size).equals(Resize.SMALL)){
+            resize();
+        }
         return oldData;
     }
 
@@ -70,6 +96,17 @@ public class ArrayVis<T> {
         T oldData = remove(index);
         add(data, index);
         return oldData;
+    }
+
+    private void resize(){
+
+    }
+
+    //shows if resize big, resize small, or don't resize
+    private enum Resize{
+        LARGE,
+        SMALL,
+        NO
     }
 
     public void draw(int rank, double h){
