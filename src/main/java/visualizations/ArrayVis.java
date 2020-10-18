@@ -46,6 +46,10 @@ public class ArrayVis<T> {
          */
     }
 
+    public void add(T data){
+        add(data, size);
+    }
+
     public void add(T data, int index){
         array[index] = data;
         ArrayCellBlock toAdd = new ArrayCellBlock();
@@ -56,6 +60,10 @@ public class ArrayVis<T> {
         if(needsResize(capacity, size).equals(Resize.SMALL)){
             resize();
         }
+    }
+
+    public T remove(){
+        return remove(size);
     }
 
     public T remove(int index){

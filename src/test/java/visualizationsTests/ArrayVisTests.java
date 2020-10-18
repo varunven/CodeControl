@@ -89,7 +89,7 @@ public class ArrayVisTests<T> extends TestCase{
     @Test
     public void FilledArrayAdd(){
         ArrayVis longVis = new ArrayVis(longArr);
-        longVis.add("data", //need to wait for being ready to handle no index pass);
+        //longVis.add("data", //need to wait for being ready to handle no index pass);
     }
 
 }
